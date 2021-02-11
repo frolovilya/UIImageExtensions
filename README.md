@@ -113,7 +113,7 @@ Convenience static initializer to get `UIImage` instance right from Base64 encod
 let decodedImage: UIImage? = UIImage.fromBase64String("data:image/jpeg;base64,/9j/4AAQSkZJ...")
 ```
 
-And propperty containing Base64 string of a `UIImage` instance.
+And property containing Base64 string of a `UIImage` instance.
 
 ```swift
 // var base64String: String?
