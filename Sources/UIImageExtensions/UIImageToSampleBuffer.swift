@@ -1,18 +1,22 @@
+#if os(OSX)
+import AppKit
+#else
 import UIKit
+#endif
 import CoreMedia
 
-extension UIImage {
+extension PlatformImage {
     
     private static let sampleBufferTimescale: Int32 = 600
     
     private func getTimingInfo(frameIndex: Int, framesPerSecond: Double) -> CMSampleTimingInfo {
-        let frameDuration: Int = Int(Double(UIImage.sampleBufferTimescale) / framesPerSecond)
+        let frameDuration: Int = Int(Double(PlatformImage.sampleBufferTimescale) / framesPerSecond)
         
         var timingInfo = CMSampleTimingInfo()
         timingInfo.presentationTimeStamp = CMTimeMake(value: Int64(frameDuration * frameIndex),
-                                                      timescale: UIImage.sampleBufferTimescale)
+                                                      timescale: PlatformImage.sampleBufferTimescale)
         timingInfo.duration = CMTimeMake(value: Int64(frameDuration),
-                                         timescale: UIImage.sampleBufferTimescale)
+                                         timescale: PlatformImage.sampleBufferTimescale)
         timingInfo.decodeTimeStamp = CMTime.invalid
         
         return timingInfo
@@ -53,7 +57,8 @@ extension UIImage {
                                                  imageBuffer: pixelBuffer,
                                                  formatDescription: formatDesc!,
                                                  sampleTiming: &timingInfo,
-                                                 sampleBufferOut: &sampleBuffer);
+                                                 sampleBufferOut: &sampleBuffer)
+        
         return sampleBuffer
     }
 

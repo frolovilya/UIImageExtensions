@@ -1,19 +1,18 @@
 # UIImageExtensions
 
-Collection of `UIImage` various conversion and utility methods to ease integration with media frameworks.
+Collection of `UIImage` utility methods to ease integration with media frameworks.
 
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Usage](#usage)
   * [Core Video pixel buffer](#cvPixelBuffer)
   * [Core Media sample buffer](#cmSampleBuffer)
-  * [Array of UIImages as video](#toVideo)
   * [UIImage from Base64 encoded string](#base64)
 
 <a name="requirements"/>
 
 ## Requirements
-* iOS 13.0
+* iOS 13.0, macOS 10.15
 * Swift 5.2
 
 <a name="installation"/>
@@ -63,7 +62,10 @@ let backToImage: UIImage? = buffer?.toImage(orientation: .left)
 ### Core Media sample buffer
 
 Actually wraps `CVPixelBuffer` to `CMSampleBuffer` with additional sample timing information.
-Provide `frameIndex` and `framesPerSecond` parameters to get sample with start time equal to `frameIndex / framesPerSecond`. 
+
+With provided `frameIndex` and `framesPerSecond` the following timing rules apply:
+* Sample duration (seconds): `1 / framesPerSecond`
+* Sample start time: `frameIndex / framesPerSecond`
 Assuming that timing starts from zero.
 
 ```swift
@@ -72,38 +74,9 @@ Assuming that timing starts from zero.
 let buffer: CMSampleBuffer? = myImage.toSampleBuffer(frameIndex: 1, framesPerSecond: 24)
 ```
 
-<a name="toVideo"/>
-
-### Array of UIImages as video
-
-Extends `[UIImage]` and adds ability to convert images array to QuickTime *.mov* movie.
-Eventualy returns URL of a video file in a temp directory. 
-
-```swift
-// func toVideo(framesPerSecond: Double, codecType: AVVideoCodecType = .h264) -> Future<URL?, Error>
-
-let frames: [UIImage] = ...
-
-frames.toVideo(framesPerSecond: 24, codecType: .hevc)
-    .sink(receiveCompletion: { completion in
-        switch completion {
-        case .failure(let error):
-            print(error)
-            break
-        case .finished:
-            print("Done")
-            break
-        }
-    }, receiveValue: { value in
-        if (value != nil) {
-            print("Generated video with URL \(value!)")
-        }
-    })
-```
-
 <a name="base64"/>
 
-### Create UIImage from Base64 encoded string
+### Create `UIImage` from Base64 encoded string
 
 Convenience static initializer to get `UIImage` instance right from Base64 encoded string.
 

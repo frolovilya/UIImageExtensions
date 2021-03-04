@@ -1,7 +1,11 @@
+#if os(OSX)
+import AppKit
+#else
 import UIKit
+#endif
 import CoreImage
 
-extension UIImage {
+extension PlatformImage {
     
     /**
      Convert `UIImage` to `CVPixelBuffer`.
@@ -58,10 +62,10 @@ extension CVPixelBuffer {
      - Parameter orientation: target image orientation, by default is `.up`
      - Returns: `UIImage` instance or `nil`, if unable to create
      */
-    public func toImage(orientation: CGImagePropertyOrientation = .up) -> UIImage? {
+    public func toImage(orientation: CGImagePropertyOrientation = .up) -> PlatformImage? {
         let ciImage = CIImage(cvPixelBuffer: self).oriented(orientation)
         let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent)
-        return cgImage != nil ? UIImage(cgImage: cgImage!) : nil
+        return cgImage != nil ? PlatformImage(cgImage: cgImage!) : nil
     }
     
 }

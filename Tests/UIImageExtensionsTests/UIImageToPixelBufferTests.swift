@@ -1,11 +1,15 @@
 import XCTest
+#if os(OSX)
+import AppKit
+#else
 import UIKit
+#endif
 @testable import UIImageExtensions
 
 final class UIImageToPixelBufferTests: XCTestCase {
     
     func testConversionResult() {
-        let image = UIImage.fromBase64String(TestImageData.tennisBall)
+        let image = PlatformImage.fromBase64String(TestImageData.tennisBall)
         XCTAssertNotNil(image)
         
         let pixelBuffer = image?.toPixelBuffer()

@@ -1,12 +1,16 @@
 import XCTest
+#if os(OSX)
+import AppKit
+#else
 import UIKit
+#endif
 import CoreMedia
 @testable import UIImageExtensions
 
 final class UIImageToSampleBufferTests: XCTestCase {
     
     func testIncorrectInput() {
-        let image = UIImage.fromBase64String(TestImageData.tennisBall)
+        let image = PlatformImage.fromBase64String(TestImageData.tennisBall)
         XCTAssertNotNil(image)
         
         XCTAssertNil(image!.toSampleBuffer(frameIndex: -1))
@@ -16,7 +20,7 @@ final class UIImageToSampleBufferTests: XCTestCase {
 
     private func imageToBufferSampleTimingInfo(frameIndex: Int,
                                                framesPerSecond: Double) -> CMSampleTimingInfo {
-        let image = UIImage.fromBase64String(TestImageData.tennisBall)
+        let image = PlatformImage.fromBase64String(TestImageData.tennisBall)
         XCTAssertNotNil(image)
         
         let buffer = image!.toSampleBuffer(frameIndex: frameIndex,
