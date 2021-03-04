@@ -66,6 +66,7 @@ Actually wraps `CVPixelBuffer` to `CMSampleBuffer` with additional sample timing
 With provided `frameIndex` and `framesPerSecond` the following timing rules apply:
 * Sample duration (seconds): `1 / framesPerSecond`
 * Sample start time: `frameIndex / framesPerSecond`
+
 Assuming that timing starts from zero.
 
 ```swift
